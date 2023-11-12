@@ -1,0 +1,85 @@
+version: "3.1"
+
+stories:
+
+- story: 1. Search health info and advice - Happy path  
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: search_health_advice
+    entities:
+      - symptoms
+  - action: action_fetch_web_advice
+  - action: utter_did_that_help
+  - intent: affirm
+  - action: utter_happy
+  - action: utter_more_help
+
+
+- story: 2. Search online for a drug/medication - A. Happy path
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: search_drug
+    entities:
+      - drug
+      - symptoms
+  - action: utter_wait
+  - action: action_try_skroutz
+  - action: utter_check_drug_results
+  - intent: affirm
+  - action: utter_happy
+  - action: utter_more_help
+
+
+- story: 2. Search online for a drug/medication - B. Sad path
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: search_drug
+    entities:
+      - drug
+      - symptoms
+  - action: utter_wait
+  - action: action_try_skroutz
+  - action: utter_check_drug_results
+  - intent: refuse
+  - action: utter_sad
+  - action: utter_other_website
+  - intent: affirm
+  - action: action_try_farmakopoios
+  - action: utter_check_drug_results
+  - intent: affirm
+  - action: utter_happy
+  - action: utter_more_help
+
+
+- story: 3. Find 24/7 pharmacy
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: search_pharmacy
+  - action: list_247_pharmacies
+  - action: utter_did_that_help
+  - intent: affirm
+  - action: utter_happy
+  - action: utter_more_help
+
+
+- story: interactive_story_1
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: search_drug
+    entities:
+    - drug: βιταμίνες
+  - slot_was_set:
+    - drug: βιταμίνες
+  - action: utter_wait
+  - action: action_try_skroutz
+  - action: utter_check_drug_results
+  - intent: affirm
+  - action: utter_happy
+  - action: utter_more_help
+  - intent: refuse
+  - action: utter_goodbye

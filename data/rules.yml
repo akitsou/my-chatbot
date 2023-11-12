@@ -1,0 +1,41 @@
+version: "3.1"
+
+rules:
+- rule: Say hello when the user starts a conversation with intent `greet`
+  conversation_start: true
+  steps:
+  - intent: greet
+  - action: utter_greet
+
+- rule: Say goodbye anytime the user says goodbye
+  steps:
+  - intent: goodbye
+  - action: utter_goodbye
+
+- rule: Say 'I am a bot' anytime the user challenges
+  steps:
+  - intent: bot_challenge
+  - action: utter_iamabot
+  - action: utter_let's_go_back
+  - action: action_listen
+
+- rule: Offer more help - accept and begin another story.
+  steps:
+  - action: utter_more_help
+  - intent: affirm
+  - action: utter_what_help
+  - action: action_listen
+
+- rule: Offer for more help - refuse and stop.
+  steps:
+  - action: utter_more_help
+  - intent: refuse
+  - action: utter_goodbye
+
+- rule: SUICIDE ALERT!!!
+  steps:
+  - intent: suicidal_thoughts
+  - action: utter_positivity 
+  - action: action_fetch_quote 
+  - action: inform_abt_helpline 
+  - action: action_listen
