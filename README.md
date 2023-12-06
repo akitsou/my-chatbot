@@ -1,5 +1,5 @@
 # my-chatbot
-This chatbot was created during the course 'M913 - Dialogue Systems' (Fall 2023), which is a third semester course of the MSc Language Technology offered by the University of Athens in Greece.
+This chatbot was created during the course 'M913 - Dialogue Systems' (Fall 2023), which is a third semester course of the MSc Language Technology offered by the National and Kapodistrian University of Athens in Greece.
 
 ## Project structure
 ```
