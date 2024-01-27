@@ -59,7 +59,7 @@ stories:
   - intent: greet
   - action: utter_greet
   - intent: search_pharmacy
-  - action: list_247_pharmacies
+  - action: action_list_247_pharmacies
   - action: utter_did_that_help
   - intent: affirm
   - action: utter_happy
@@ -83,3 +83,624 @@ stories:
   - action: utter_more_help
   - intent: refuse
   - action: utter_goodbye
+
+- story: 4. Find nearby hospitals - Happy path 1
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: search_nearby_hospitals
+  - action: hospital_form
+  - active_loop: hospital_form
+  - slot_was_set:
+    - requested_slot: null
+  - active_loop: null
+  - action: action_show_hospitals_on_GMaps
+  - action: utter_did_that_help
+  - intent: affirm
+  - action: utter_happy
+  - action: utter_more_help
+
+
+- story: 4. Find nearby hospitals - Happy path 2
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: search_nearby_hospitals
+  - action: hospital_form # used in the beginning when first starting a form, and also while resuming the form action when the form is already active.
+  - active_loop: hospital_form # used right after the first form action event.
+  - slot_was_set:
+    - requested_slot: city
+  - intent: inform_hospital_form
+    entities:
+    - city: Τρίπολη
+  - slot_was_set:
+    - city: Τρίπολη
+  - action: hospital_form # used in the beginning when first starting a form, and also while resuming the form action when the form is already active.
+  - slot_was_set:
+    - requested_slot: country
+  - intent: inform_hospital_form
+    entities:
+    - country: Ελλάδα
+  - slot_was_set:
+    - country: Ελλάδα
+  - action: hospital_form
+  - slot_was_set:
+    - requested_slot: null
+  - active_loop: null # used to deactivate the form.
+  - action: action_show_hospitals_on_GMaps
+  - action: utter_did_that_help
+  - intent: affirm
+  - action: utter_happy
+  - action: utter_more_help
+  - intent: refuse
+  - action: utter_goodbye
+
+
+- story: interactive_story_2 - Two intents (Hospitals + Pharmacies).
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: search_nearby_hospitals
+  - action: hospital_form
+  - active_loop: hospital_form
+  - slot_was_set:
+    - requested_slot: city
+  - intent: inform_hospital_form
+    entities:
+    - city: Αθήνα
+  - slot_was_set:
+    - city: Αθήνα
+  - action: hospital_form
+  - slot_was_set:
+    - requested_slot: country
+  - intent: inform_hospital_form
+    entities:
+    - country: Ελλάδα
+  - slot_was_set:
+    - country: Ελλάδα
+  - action: hospital_form
+  - slot_was_set:
+    - requested_slot: null
+  - active_loop: null
+  - action: action_show_hospitals_on_GMaps
+  - action: utter_did_that_help
+  - intent: affirm
+  - action: utter_happy
+  - action: utter_more_help
+  - intent: search_pharmacy
+  - action: action_list_247_pharmacies
+  - action: utter_did_that_help
+  - intent: affirm
+  - action: utter_happy
+  - action: utter_more_help
+  - intent: refuse
+  - action: utter_goodbye
+
+
+- story: User starts with chitchat_birthplace + hospital form + pharmacies - interactive_story
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: chitchat_birthplace
+  - action: utter_chitchat_birthplace
+  - intent: search_nearby_hospitals
+  - action: hospital_form
+  - active_loop: hospital_form
+  - slot_was_set:
+    - requested_slot: city
+  - intent: inform_hospital_form
+    entities:
+    - city: Αθήνα
+  - slot_was_set:
+    - city: Αθήνα
+  - action: hospital_form
+  - slot_was_set:
+    - requested_slot: country
+  - intent: inform_hospital_form
+    entities:
+    - country: Ελλάδα
+  - slot_was_set:
+    - country: Ελλάδα
+  - action: hospital_form
+  - slot_was_set:
+    - requested_slot: null
+  - active_loop: null
+  - action: action_show_hospitals_on_GMaps
+  - action: utter_did_that_help
+  - intent: affirm
+  - action: utter_happy
+  - action: utter_more_help
+  - intent: search_pharmacy
+  - action: action_list_247_pharmacies
+  - intent: greet
+  - intent: goodbye
+  - action: utter_goodbye
+
+
+- story: Chitchat about birthplace
+  steps:
+  - intent: chitchat_birthplace
+  - action: utter_chitchat_birthplace
+  - intent: inform_birthplace
+    entities:
+    - birthplace: Τρίπολη
+  - action: utter_nice_birthplace
+  - action: utter_let's_go_back
+  - action: action_listen
+
+
+- story: Chitchat about age
+  steps:
+  - intent: chitchat_years-old
+  - action: utter_chitchat_years-old
+  - intent: inform_age
+    entities:
+    - age: 34
+  - action: utter_nice_age
+  - action: utter_let's_go_back
+  - action: action_listen
+
+
+- story: User interrupts the hospital form for chitchat_years-old
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: search_nearby_hospitals
+  - action: hospital_form
+  - active_loop: hospital_form
+  - intent: chitchat_years-old
+  - action: utter_chitchat_years-old
+  - intent: inform_age
+    entities:
+    - age: 34
+  - action: utter_nice_age
+  - action: utter_let's_go_back
+  - action: hospital_form
+  - slot_was_set:
+    - requested_slot: null
+  - active_loop: null
+  - action: action_show_hospitals_on_GMaps
+  - action: utter_did_that_help
+  - intent: affirm
+  - action: utter_happy
+  - action: utter_more_help
+
+- story: User interrupts the hospital form for chitchat_birthplace - interactive_story
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: search_nearby_hospitals
+  - action: hospital_form
+  - active_loop: hospital_form
+  - slot_was_set:
+    - requested_slot: city
+  - intent: inform_hospital_form
+    entities:
+    - city: Καβάλα
+  - slot_was_set:
+    - city: Καβάλα
+  - action: hospital_form
+  - slot_was_set:
+    - requested_slot: country
+  - intent: chitchat_birthplace
+  - action: utter_chitchat_birthplace
+  - intent: inform_birthplace
+    entities:
+    - city: Τρίπολη
+  - slot_was_set:
+    - city: Τρίπολη
+  - action: utter_nice_birthplace
+  - action: utter_let's_go_back
+  - action: hospital_form
+  - slot_was_set:
+    - requested_slot: country
+  - intent: inform_hospital_form
+    entities:
+    - country: Ελλάδα
+  - slot_was_set:
+    - country: Ελλάδα
+  - action: hospital_form
+  - slot_was_set:
+    - requested_slot: null
+  - active_loop: null
+  - action: action_show_hospitals_on_GMaps
+  - action: utter_did_that_help
+  - intent: affirm
+  - action: utter_happy
+  - action: utter_more_help
+  - intent: search_drug
+    entities:
+    - drug: καραμέλες
+    - symptoms: το λαιμό
+  - slot_was_set:
+    - symptoms: το λαιμό
+  - slot_was_set:
+    - drug: καραμέλες
+  - action: utter_wait
+  - action: action_try_skroutz
+  - action: utter_check_drug_results
+  - intent: refuse
+  - action: utter_sad
+  - action: utter_other_website
+  - intent: affirm
+  - action: action_try_farmakopoios
+  - action: utter_check_drug_results
+  - intent: affirm
+  - action: utter_happy
+  - action: utter_more_help
+  - intent: goodbye
+  - action: utter_goodbye
+
+- story: User says a silly thing - interactive_story
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: search_drug
+    entities:
+    - silly_thing: βόλτα
+  - slot_was_set:
+    - silly_thing: βόλτα
+  - intent: user_is_not_serious
+    entities:
+    - silly_thing: βόλτα
+  - action: utter_silly_thing_back
+  - intent: search_drug
+    entities:
+    - drug: χάπια
+    - symptoms: άγχος
+  - slot_was_set:
+    - symptoms: άγχος
+  - slot_was_set:
+    - drug: χάπια
+  - action: utter_wait
+  - action: action_try_skroutz
+  - action: utter_check_drug_results
+  - intent: affirm
+  - action: utter_happy
+  - action: utter_more_help
+  - intent: search_pharmacy
+  - action: action_list_247_pharmacies
+  - action: utter_did_that_help
+  - intent: affirm
+  - action: utter_happy
+  - action: utter_more_help
+  - intent: goodbye
+  - action: utter_goodbye
+
+- story: User starts with chitchat_person + search drug - interactive story 
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: chitchat_person
+    entities:
+    - PERSON: Ιπποκράτη
+    - PERSON: Ιπποκράτη
+  - slot_was_set:
+    - PERSON: Ιπποκράτη
+  - action: utter_chitchat_person
+  - action: utter_let's_go_back
+  - intent: search_drug
+    entities:
+    - symptoms: πονόλαιμο
+  - slot_was_set:
+    - symptoms: πονόλαιμο
+  - intent: search_drug
+    entities:
+    - drug: σιρόπι
+    - symptoms: πονόλαιμο
+  - action: utter_wait
+  - action: action_try_skroutz
+  - action: utter_check_drug_results
+  - intent: search_health_advice
+  - intent: refuse
+  - action: utter_sad
+  - action: utter_other_website
+  - intent: affirm
+  - action: action_try_farmakopoios
+  - action: utter_check_drug_results
+  - intent: refuse
+  - intent: affirm
+  - action: utter_happy
+  - action: utter_more_help
+  - intent: refuse
+  - action: utter_goodbye
+
+- story: Mix - interactive_story_1
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: chitchat_birthplace
+  - action: utter_chitchat_birthplace
+  - intent: inform_birthplace
+    entities:
+    - city: Κέρκυρα
+  - action: utter_nice_birthplace
+  - action: utter_let's_go_back
+  - intent: chitchat_person
+  - action: utter_chitchat_person
+  - action: utter_let's_go_back
+  - intent: affirm
+  - action: utter_nlu_fallback
+  - intent: search_pharmacy
+  - action: action_list_247_pharmacies
+  - action: utter_did_that_help
+  - intent: affirm
+  - action: utter_happy
+  - action: utter_more_help
+  - intent: user_is_not_serious
+    entities:
+    - symptoms: παγωτό φιστίκι
+  - slot_was_set:
+    - symptoms: παγωτό φιστίκι
+  - action: utter_silly_thing_back
+  - intent: affirm
+  - intent: nlu_fallback
+  - action: utter_nlu_fallback
+  - intent: goodbye
+  - action: utter_goodbye
+
+- story: User ends with suicidal thoughts after saying goodbye - interactive_story
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: nlu_fallback
+  - action: utter_nlu_fallback
+  - intent: search_nearby_hospitals
+  - action: hospital_form
+  - active_loop: hospital_form
+  - slot_was_set:
+    - requested_slot: city
+  - intent: inform_hospital_form
+    entities:
+    - GPE: Κολωνάκι
+    - city: Κολωνάκι
+  - slot_was_set:
+    - city: Κολωνάκι
+  - slot_was_set:
+    - GPE: Κολωνάκι
+  - action: hospital_form
+  - slot_was_set:
+    - requested_slot: country
+  - intent: inform_hospital_form
+    entities:
+    - GPE: Ελλάδα
+    - country: Ελλάδα
+  - slot_was_set:
+    - country: Ελλάδα
+  - slot_was_set:
+    - GPE: Ελλάδα
+  - action: hospital_form
+  - slot_was_set:
+    - requested_slot: null
+  - active_loop: null
+  - action: action_show_hospitals_on_GMaps
+  - action: utter_did_that_help
+  - intent: goodbye
+  - action: utter_goodbye
+  - intent: suicidal_thoughts
+  - action: utter_positivity
+  - action: action_fetch_quote
+  - action: action_inform_abt_helpline
+  - action: action_listen
+
+- story: Mix - interactive_story_2
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: user_is_not_serious
+    entities:
+    - silly_thing: αστείο 
+  - action: utter_silly_thing_back
+  - intent: search_drug
+    entities:
+    - drug: σταγόνες
+  - slot_was_set:
+    - drug: σταγόνες
+  - intent: search_drug
+    entities:
+    - drug: σταγόνες
+    - symptoms: αυτιά
+  - action: utter_wait
+  - action: action_try_skroutz
+  - action: utter_check_drug_results
+  - intent: refuse
+  - action: utter_sad
+  - action: utter_other_website
+  - intent: affirm
+  - action: action_try_farmakopoios
+  - action: utter_check_drug_results
+  - intent: affirm
+  - action: utter_happy
+  - action: utter_more_help
+  - intent: chitchat_person
+  - action: utter_chitchat_person
+  - action: utter_let's_go_back
+  - intent: greet
+  - intent: goodbye
+  - action: utter_goodbye
+
+- story: User chitchats about person, years of age, and birthplace - interactive_story
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: chitchat_person
+    entities:
+    - PERSON: Μέριλιν Μονρόε
+  - slot_was_set:
+    - PERSON: Μέριλιν Μονρόε
+  - action: utter_chitchat_person
+  - action: utter_let's_go_back
+  - intent: chitchat_years-old
+  - action: utter_chitchat_years-old
+  - intent: inform_age
+    entities:
+    - age: '34'
+  - slot_was_set:
+    - age: '34'
+  - action: utter_nice_age
+  - action: utter_let's_go_back
+  - intent: chitchat_birthplace
+  - action: utter_chitchat_birthplace
+  - intent: inform_birthplace
+    entities:
+    - GPE: Καβάλα
+    - GPE: Καβάλα
+  - slot_was_set:
+    - GPE: Καβάλα
+  - action: utter_nice_birthplace
+  - action: utter_let's_go_back
+  - intent: goodbye
+  - action: utter_goodbye
+
+- story: Mix - interactive_story_3
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: user_is_not_serious
+    entities:
+    - silly_thing: ελεύθερο χρόνο
+  - action: utter_silly_thing_back
+  - intent: nlu_fallback
+  - action: utter_nlu_fallback
+  - intent: search_drug
+  - intent: search_drug
+    entities:
+    - drug: κρέμα ματιών
+  - action: utter_wait
+  - action: action_try_skroutz
+  - action: utter_check_drug_results
+  - intent: affirm
+  - intent: search_drug
+    entities:
+    - drug: κρέμα χεριών
+  - action: utter_wait
+  - action: action_try_skroutz
+  - action: utter_check_drug_results
+  - intent: affirm
+  - action: utter_happy
+  - action: utter_more_help
+  - intent: chitchat_bot_name
+  - action: utter_Hippocrates_history
+  - intent: goodbye
+  - action: utter_goodbye
+
+- story: User doesn't say goodbye - interactive_story
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: chitchat_birthplace
+  - action: utter_chitchat_birthplace
+  - intent: inform_birthplace
+    entities:
+    - GPE: Κέρκυρα
+  - slot_was_set:
+    - GPE: Κέρκυρα
+  - action: utter_nice_birthplace
+  - action: utter_let's_go_back
+  - intent: chitchat_person
+  - action: utter_chitchat_person
+  - action: utter_let's_go_back
+  - intent: search_drug
+    entities:
+    - drug: κρέμα Koρρέ
+  - action: utter_wait
+  - action: action_try_skroutz
+  - action: utter_check_drug_results
+  - intent: search_health_advice
+    entities:
+    - symptoms: υπερκόπωσης
+  - slot_was_set:
+    - symptoms: υπερκόπωσης
+  - intent: search_health_advice
+    entities:
+    - symptoms: υπερκόπωσης
+  - action: action_fetch_web_advice
+  - action: utter_did_that_help
+  - intent: affirm
+  - action: utter_happy
+  - action: utter_more_help
+
+- story: Mix - interactive_story_4
+  steps:
+  - intent: affirm
+  - intent: greet
+  - action: utter_greet
+  - intent: search_health_advice
+    entities:
+    - PERSON: Ιπποκράτη
+    - symptoms: κεφάλι
+  - slot_was_set:
+    - symptoms: κεφάλι
+  - slot_was_set:
+    - PERSON: Ιπποκράτη
+  - action: action_fetch_web_advice
+  - action: utter_did_that_help
+  - intent: search_nearby_hospitals
+  - action: hospital_form
+  - active_loop: hospital_form
+  - slot_was_set:
+    - requested_slot: city
+  - intent: inform_hospital_form
+    entities:
+    - city: Ιωάννινα
+    - city: Ιωάννινα
+  - slot_was_set:
+    - city: Ιωάννινα
+  - action: hospital_form
+  - slot_was_set:
+    - requested_slot: country
+  - intent: inform_hospital_form
+    entities:
+    - GPE: Ελλάδα
+    - country: Ελλάδα
+  - slot_was_set:
+    - country: Ελλάδα
+  - slot_was_set:
+    - GPE: Ελλάδα
+  - action: hospital_form
+  - slot_was_set:
+    - requested_slot: null
+  - active_loop: null
+  - action: action_show_hospitals_on_GMaps
+  - action: utter_did_that_help
+  - intent: goodbye
+  - action: utter_goodbye
+
+- story: Mix - simple interactive_story
+  steps:
+  - intent: search_nearby_hospitals
+  - action: hospital_form
+  - active_loop: hospital_form
+  - intent: inform_hospital_form
+    entities:
+    - GPE: Χανιά
+    - city: Χανιά
+  - slot_was_set:
+    - city: Χανιά
+  - slot_was_set:
+    - GPE: Χανιά
+  - action: hospital_form
+  - slot_was_set:
+    - city: Χανιά
+  - slot_was_set:
+    - requested_slot: country
+  - intent: inform_hospital_form
+    entities:
+    - GPE: Ελλάδα
+    - country: Ελλάδα
+  - slot_was_set:
+    - country: Ελλάδα
+  - slot_was_set:
+    - GPE: Ελλάδα
+  - action: hospital_form
+  - slot_was_set:
+    - country: Ελλάδα
+  - slot_was_set:
+    - requested_slot: null
+  - active_loop: null
+  - action: action_show_hospitals_on_GMaps
+  - action: utter_did_that_help
+  - intent: goodbye
+  - action: utter_goodbye
+
+

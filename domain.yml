@@ -1,46 +1,77 @@
 version: '3.1'
-
 intents:
 - affirm
 - bot_challenge
+- chitchat_birthplace
+- chitchat_bot_name
+- chitchat_person
+- chitchat_years-old
 - goodbye
 - greet
+- inform_age
+- inform_birthplace
+- inform_hospital_form
+- nlu_fallback
 - refuse
 - search_drug
 - search_health_advice
+- search_nearby_hospitals
 - search_pharmacy
 - suicidal_thoughts
-
+- user_is_not_serious
 responses:
+  utter_Hippocrates_history:
+  - text: |
+      Με λένε "Ιπποκράτη", γιατί πήρα το όνομα του αληθινού Ιπποκράτη (460-377 π.Χ.), που ήταν ο πατέρας της σύγχρονης ιατρικής επιστήμης.
+      Ο Ιπποκράτης είναι ο θεμελιωτής της ορθολογικής ιατρικής και κατόρθωσε να την απαλλάξει από τα μεταφυσικά στοιχεία, τις προλήψεις, τις δαιμονολογίες και τις δεισιδαιμονίες της εποχής.
+      Το ήξερες ότι στα χρόνια του Ιπποκράτη οι άνθρωποι πίστευαν ότι η προέλευση των διαφόρων νόσων και επιδημιών είναι θεϊκή;
+  utter_silly_thing_back:
+  - text: Ο ρόλος μου δεν είναι να μιλάω για αυτά τα θέματα (όπως η ερώτησή σου για... "{silly_thing}")! Έχω δημιουργηθεί για να σε βοηθήσω με θέματα υγείας και μόνο! Ρώτησέ με για όποιο θέμα υγείας θες! Επίσης, μπορώ να σε βοηθήσω να βρεις νοσοκομεία και εφημερεύοντα φαρμακεία στην περιοχή σου.
+  utter_chitchat_birthplace:
+  - text: Είμαι από την Κω. Εσύ από ποια πόλη/χωριό είσαι;
+  - text: Γεννήθηκα στην Κω, και μένω στην Κω, γιατί μου αρέσει πολύ! Εσύ από πού είσαι;
+  utter_nice_birthplace:
+  - text: Α! Είσαι από {GPE}! Πολύ όμορφο μέρος, έχω πάει!
+  utter_chitchat_years-old:
+  - text: Είμαι 34. Εσύ πόσων χρονών είσαι;
+  - text: Είμαι μόνο 34 χρονών! Εσύ πόσο είσαι;
+  utter_chitchat_person:
+  - text: Δεν μπορώ να έχω γνώμη για αυτήν την προσωπικότητα (συγγνώμη, {PERSON}!!!). Η ιδιότητά μου ως ο προσωπικός σου σύμβουλος υγείας δεν μου το επιτρέπει!
+  utter_nice_age:
+  - text: Είσαι αλήθεια {age}; Δεν σου φαίνεται!
+  utter_nlu_fallback:
+  - text: Συγγνώμη, δεν είμαι σίγουρος για το τι μου ζητάς να κάνω. Μπορείς να το εξηγήσεις διαφορετικά, ίσως πιο απλά;
+  - text: Συγγνώμη, δεν κατάλαβα καλά τι εννοείς. Ξαναγράψε το πιο απλά!
   utter_check_drug_results:
-  - text: Είσαι ικανοποιημένος από αυτά τα αποτελέσματα;
-  - text: Είσαι ικανοποιημένος από αυτές τις επιλογές;
-  - text: Μπόρεσες τελικά να βρεις αυτό που ήθελες;
+  - text: Είσαι ικανοποιημένος από αυτά τα αποτελέσματα; Θυμήσου ότι τα φάρμακα πρέπει να ωφελούν ή τουλάχιστον να μη βλάπτουν.
+  - text: Είσαι ικανοποιημένος από αυτές τις επιλογές; Μην ξεχνάς ότι η υπερκατανάλωση φαρμάκων δεν είναι ωφέλιμη για τον οργανισμό σου.
+  - text: Μπόρεσες τελικά να βρεις αυτό που ήθελες; Σου υπενθυμίζω ότι είναι φρόνιμο να πάρεις και μια συμβουλή από έναν ειδικό για το φάρμακο που ψάχνεις.
   utter_wait:
   - text: Ένα λεπτό να ψάξω στην ιστοσελίδα skroutz.gr. Συνήθως εκεί υπάρχουν όλα...
   - text: Περίμενε ένα λεπτό να ψάξω στην ιστοσελίδα skroutz.gr. Μάλλον θα βρεις αυτό που θες...
   utter_greet:
-  - text: Καλώς ήρθες! Τι μπορώ να κάνω για σένα σήμερα;
-  - text: Γεια σου! Τι μπορώ να κάνω για σένα σήμερα;
-  - text: Γεια σου! Πώς μπορώ να σε βοηθήσω σήμερα;
-  - text: Γεια χαρά! Πες μου τι ψάχνεις και θα προσπαθήσω να το βρω αμέσως!
+  - text: Καλώς ήρθες! Είμαι ο Ιπποκράτης, ο προσωπικός σου ιατρικός σύμβουλος! Τι μπορώ να κάνω για σένα σήμερα;
+  - text: Γεια σου! Είμαι ο Ιπποκράτης, ο προσωπικός σου ιατρικός σύμβουλος! Τι μπορώ να κάνω για σένα σήμερα;
+  - text: Γεια σου! Είμαι ο Ιπποκράτης, ο προσωπικός σου ιατρικός σύμβουλος! Πώς μπορώ να σε βοηθήσω σήμερα;
+  - text: Γεια χαρά! Είμαι ο Ιπποκράτης, ο προσωπικός σου ιατρικός σύμβουλος! Πες μου τι ψάχνεις και θα προσπαθήσω να το βρω αμέσως!
   utter_did_that_help:
   - text: Βρήκες αυτό που ήθελες;
   - text: Σε κάλυψαν αυτές οι πληροφορίες;
   - text: Όλα εντάξει με την ιστοσελίδα που σου πρότεινα;
   utter_let's_go_back:
   - text: Ας επιστρέψουμε στη συζήτησή μας...
-  - text: Γράψε μου τι χρειάζεσαι και θα προσπαθήσω να σε βοηθήσω όσο πιο γρήγορα μπορώ.
+  - text: Αλλά ας μην ξεφεύγουμε από το κυρίως θέμα μας.
+  - text: Ας επανέλθουμε, όμως, στη συζήτηση που είχαμε.
   utter_happy:
-  - text: Τέλεια!
+  - text: Αυτό είναι τέλειο!
   - text: Εξαιρετικά!
-  - text: Πολύ ωραία!
-  - text: Χαίρομαι που σε βοήθησα!
-  - text: Χαίρομαι που το ακούω!
+  - text: Πάρα πολύ ωραία!
+  - text: Χαίρομαι πολύ που σε βοήθησα!
+  - text: Χαίρομαι πολύ που το ακούω!
   utter_more_help:
   - text: Θέλεις να ψάξω κάτι άλλο; Μπορώ να ψάξω για ιατρικές συμβουλές, για φάρμακα, αλλά και για φαρμακεία που βρίσκονται κοντά σου.
-  - text: Θέλεις να σε βοηθήσω με κάτι άλλο;
-  - text: Θα ήθελες να ψάξω κάτι άλλο; Μπορώ να βρω ιατρικές συμβουλές, για φάρμακα, αλλά και για φαρμακεία που βρίσκονται κοντά σου.
+  - text: Θέλεις να σε βοηθήσω με κάτι άλλο σχετικό με νόσους, φάρμακα, νοσοκομεία ή φαρμακεία;
+  - text: Θα ήθελες να ψάξω κάτι άλλο; Μπορώ να βρω ιατρικές συμβουλές, φάρμακα, αλλά και φαρμακεία που βρίσκονται κοντά στην περιοχή σου.
   - text: Μη διστάσεις να με ρωτήσεις για ό,τι άλλο χρειαστείς! Θα ήθελες να ψάξω κάτι άλλο;
   utter_what_help:
   - text: Πες μου τι θα ήθελες να ψάξω.
@@ -52,49 +83,127 @@ responses:
   utter_other_website:
   - text: Μήπως θέλεις να ψάξω και σε μια άλλη ιστοσελίδα;
   - text: Θες να ψάξω και σε μια άλλη γνωστή ιστοσελίδα;
-  - text: Μήπως θέλεις να ψάξω στην ιστοσελίδα ofarmakopoiosmoy.gr;
   utter_goodbye:
-  - text: Σου εύχομαι καλή συνέχεια! Τα λέμε!
-  - text: Σου εύχομαι περαστικά! Μπάι μπάι!
-  - text: Εύχομαι γρήγορα περαστικά! Τα λέμε!
+  - text: Σου εύχομαι καλή συνέχεια και να προσέχεις την υγεία σου! Τα λέμε!
+  - text: Ελπίζω να νιώσεις σύντομα καλύτερα! Καλή συνέχεια!
+  - text: Σου εύχομαι περαστικά! Τα λέμε!
+  - text: Εύχομαι γρήγορα περαστικά! Σε χαιρετώ!
   utter_iamabot:
-  - text: >
-      Η απορία σου είναι πολύ λογική! Είμαι ένα ρομπότ που έχει προγραμματιστεί για να σε βοηθήσει να απαλύνεις τον πόνο σου. Μπορώ, επίσης, 
-      να σε βοηθήσω να βρεις ιατρικές πληροφορίες και συμβουλές ή φαρμακεία στην περιοχή σου.
+  - text: |
+      Η απορία σου είναι πολύ λογική! Είμαι ένα ρομπότ που έχει προγραμματιστεί για να σε βοηθήσει να απαλύνεις τον πόνο σου. Μπορώ, επίσης, να σε βοηθήσω να βρεις ιατρικές πληροφορίες και συμβουλές, φαρμακεία και νοσοκομεία και κλινικές στην περιοχή σου.
   utter_positivity:
   - text: Μην σκέφτεσαι τόσο αρνητικά κι απόλυτα. Σκέψου ότι η ζωή σου είναι φυσιολογικό να έχει δύσκολες περιόδους. Ωστόσο, πάντα υπάρχει φως στο τέλος του τούνελ!
   - text: Καταλαβαίνω πώς αισθάνεσαι, αλλά πρέπει να ξέρεις ότι δεν είσαι μόνος σου.
-
+  utter_ask_city:
+  - text: Γράψε μου σε ποια περιοχή, πόλη, χωριό ή νησί βρίσκεσαι, για να μπορέσω να ψάξω τα πιο κοντινά σου νοσοκομεία και κλινικές.
+  utter_ask_country:
+  - text: Γράψε μου και σε ποια χώρα βρίσκεσαι, για να είμαι σίγουρος ότι ψάχνω στο σωστό μέρος (κάποια μέρη είναι διαφορετικά, όμως έχουν το ίδιο όνομα)!
 session_config:
-  session_expiration_time: 60
-  carry_over_slots_to_new_session: true
-
+  session_expiration_time: 30
+  carry_over_slots_to_new_session: false
 entities:
-- drug
+- country
+- city
+- GPE
 - symptoms
-
+- drug
+- silly_thing
+- age
+- PERSON
 slots:
   symptoms:
     type: text
+    influence_conversation: true
     mappings:
     - type: from_entity
       entity: symptoms
   drug:
     type: text
+    influence_conversation: true
     mappings:
     - type: from_entity
       entity: drug
-
+  city:
+    type: text
+    influence_conversation: true
+    mappings:
+    - type: from_text
+      conditions:
+      - active_loop: hospital_form
+        requested_slot: city
+    - type: from_entity
+      entity: city
+      conditions:
+      - active_loop: hospital_form
+        requested_slot: city
+  country:
+    type: text
+    influence_conversation: true
+    mappings:
+    - type: from_text
+      conditions:
+      - active_loop: hospital_form
+        requested_slot: country
+    - type: from_entity
+      entity: country
+      conditions:
+      - active_loop: hospital_form
+        requested_slot: country
+  GPE:
+    type: text
+    influence_conversation: false
+    mappings:
+    - type: from_entity
+      entity: GPE
+  age:
+    type: text
+    influence_conversation: false
+    mappings:
+    - type: from_entity
+      entity: age
+  silly_thing:
+    type: text
+    influence_conversation: false
+    mappings:
+    - type: from_entity
+      entity: silly_thing
+  PERSON:
+    type: text
+    influence_conversation: false
+    mappings:
+    - type: from_entity
+      entity: PERSON
+forms:
+  hospital_form:
+    required_slots:
+    - city
+    - country
 actions:
-- action_try_skroutz
-- utter_more_help
+- validate_hospital_form
 - utter_happy
+- action_show_hospitals_on_GMaps
+- utter_did_that_help
+- utter_more_help
 - utter_goodbye
 - utter_greet
-- utter_wait
-- utter_check_drug_results
 - action_fetch_web_advice
+- utter_nice_birthplace
+- utter_chitchat_birthplace
+- utter_chitchat_person
+- utter_check_drug_results
+- utter_wait
+- action_try_skroutz
+- utter_let's_go_back
+- utter_silly_thing_back
+- utter_Hippocrates_history
+- utter_nlu_fallback
+- utter_chitchat_years-old
+- utter_nice_age
+- utter_sad
+- utter_other_website
 - action_try_farmakopoios
+- utter_positivity
+- action_inform_abt_helpline
 - action_fetch_quote
-- inform_abt_helpline
-- list_247_pharmacies
+- action_list_247_pharmacies
+- utter_iamabot

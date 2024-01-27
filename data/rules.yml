@@ -1,7 +1,13 @@
 version: "3.1"
 
 rules:
-- rule: Say hello when the user starts a conversation with intent `greet`
+
+- rule: User complains to the bot for misunderstanding
+  steps:
+  - intent: nlu_fallback 
+  - action: utter_nlu_fallback
+
+- rule: Say hello when the user starts a conversation with intent 'greet'
   conversation_start: true
   steps:
   - intent: greet
@@ -17,25 +23,104 @@ rules:
   - intent: bot_challenge
   - action: utter_iamabot
   - action: utter_let's_go_back
-  - action: action_listen
 
-- rule: Offer more help - accept and begin another story.
+- rule: Interruption during hospital form for the bot challenge
+  condition:
+  - active_loop: hospital_form
   steps:
+  - intent: bot_challenge
+  - action: utter_iamabot
+  - action: hospital_form
+  - active_loop: hospital_form
+
+- rule: Chitchat about birthplace
+  steps:
+  - intent: chitchat_birthplace
+  - action: utter_chitchat_birthplace
+
+- rule: Chitchat about age
+  steps:
+  - intent: chitchat_years-old
+  - action: utter_chitchat_years-old
+
+- rule: Chitchat about person
+  steps:
+  - intent: chitchat_person
+  - action: utter_chitchat_person
+  - action: utter_let's_go_back
+
+- rule: Chitchat about silly things
+  steps:
+  - intent: user_is_not_serious
+  - action: utter_silly_thing_back
+
+- rule: Chitchat about name "Hippocrates"
+  steps:
+  - intent: chitchat_bot_name
+  - action: utter_Hippocrates_history
+
+- rule: Did that help? - affirm and be happy.
+  steps:
+  - action: utter_did_that_help
+  - intent: affirm
+  - action: utter_happy
+  - action: utter_more_help
+
+- rule: Did that help? - refuse and be sad.
+  steps:
+  - action: utter_did_that_help
+  - intent: refuse
+  - action: utter_sad
+
+- rule: Offer more help after successful previous task - accept and begin another story.
+  steps:
+  - action: utter_happy
   - action: utter_more_help
   - intent: affirm
   - action: utter_what_help
   - action: action_listen
 
-- rule: Offer for more help - refuse and stop.
+- rule: Offer for more help after successful previous task - refuse and stop.
   steps:
+  - action: utter_happy
   - action: utter_more_help
   - intent: refuse
   - action: utter_goodbye
+
 
 - rule: SUICIDE ALERT!!!
   steps:
   - intent: suicidal_thoughts
   - action: utter_positivity 
   - action: action_fetch_quote 
-  - action: inform_abt_helpline 
+  - action: action_inform_abt_helpline 
   - action: action_listen
+
+
+- rule: Activate hospital form - Happy path only!
+  steps:
+  - intent: search_nearby_hospitals
+  - action: hospital_form
+  - active_loop: hospital_form
+
+- rule: Submit form
+  condition: # Indicates that the rule should apply only when the hospital form is active.
+  - active_loop: hospital_form
+  steps:
+  - action: hospital_form
+  - active_loop: null
+  - slot_was_set:
+    - requested_slot: null
+  - action: action_show_hospitals_on_GMaps # What needs to happen after the form is done.
+  - action: utter_did_that_help
+
+
+- rule: 2. Search Skroutz first
+  steps:
+  - intent: search_drug
+    entities:
+      - drug
+      - symptoms
+  - action: utter_wait
+  - action: action_try_skroutz
+  - action: utter_check_drug_results

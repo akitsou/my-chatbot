@@ -1,78 +1,62 @@
-# The config recipe.
+# The config recipe. Sets out the NLU pipeline.
 # https://rasa.com/docs/rasa/model-configuration/
 recipe: default.v1
-# Sets out the NLU pipeline.
 
-
-# The assistant project unique identifier
-# This default value must be replaced with a unique assistant name within your deployment
+# The assistant project unique identifier.
+# This default value must be replaced with a unique assistant name within your deployment.
 assistant_id: 20231030-123555-grouchy-bud
 
-# Configuration for Rasa NLU.
+# Configuration for Rasa NLU. The language and pipeline keys specify the components used by the model to make NLU predictions. 
 # https://rasa.com/docs/rasa/nlu/components/
 language: el
 
-pipeline:
-# # No configuration for the NLU pipeline was provided. The following default pipeline was used to train your model.
-# # If you'd like to customize it, uncomment and adjust the pipeline.
-# # See https://rasa.com/docs/rasa/tuning-your-model for more information.
-#   - name: WhitespaceTokenizer
-#   - name: RegexFeaturizer
-#   - name: LexicalSyntacticFeaturizer
-#   - name: CountVectorsFeaturizer
-#   - name: CountVectorsFeaturizer
-#     analyzer: char_wb
-#     min_ngram: 1
-#     max_ngram: 4
-#   - name: DIETClassifier
-#     epochs: 100
-#     constrain_similarities: true
-#   - name: EntitySynonymMapper
-#   - name: ResponseSelector
-#     epochs: 100
-#     constrain_similarities: true
-#   - name: FallbackClassifier
-#     threshold: 0.3
-#     ambiguity_threshold: 0.1
+pipeline: # See https://rasa.com/docs/rasa/tuning-your-model for more information.
 
-#- name: SpacyNLP
- # model: "el_core_news_md"
-#- name: SpacyTokenizer
-#- name: SpacyFeaturizer
-- name: WhitespaceTokenizer
-- name: RegexFeaturizer
-- name: LexicalSyntacticFeaturizer
-- name: CountVectorsFeaturizer
-- name: CountVectorsFeaturizer
+- name: WhitespaceTokenizer # Greek is a whitespace tokenizable language.
+# - name: RegexFeaturizer
+- name: LexicalSyntacticFeaturizer # Flags words' POS, and chars as punctuation marks - helps with rich morphology.
+- name: CountVectorsFeaturizer # Default (word-level features).
+- name: CountVectorsFeaturizer # First 5 '-name:' as in original pipeline.
   analyzer: "char" # Captures morphology and preempts spelling errors.
   min_ngram: 1
   max_ngram: 4
-- name: DIETClassifier
-  loss_type: cross_entropy
-  constrain_similarities: True # Ensures that the similarity values during training are in a meaningful range when using the cross-entropy loss. Φορ better and more stable training results.
+- name: SpacyNLP
+  model: "el_core_news_lg"
+- name: SpacyEntityExtractor
+  dimensions: ["PERSON", "GPE"]
+# - name: EntitySynonymMapper # Maps synonymous entity values to the same value.
+- name: DIETClassifier # transformer-based model
+  loss_type: cross_entropy # 
+  embedding_dimension: 128
+  transformer_size: 1024
+  number_of_attention_heads: 4
+  number_of_transformer_layers: 1
+  constrain_similarities: True # Ensures that the similarity values during training are in a meaningful range when using the cross-entropy loss. For better and more stable training results.
+  # constarin_similarities: True. This should help in better generalization of the model to real world test sets.
   epochs: 200 # +100 compared to original
-#- name: CRFEntityExtractor
-#- name: SpacyEntityExtractor
-- name: EntitySynonymMapper
+# - name: RegexEntityExtractor
+#   use_lookup_tables: True
+#- name: CRFEntityExtractor # Useful for custom entities specific to the specific domain that might not be covered by SpaCy's pre-trained models. Not helpful.
 - name: ResponseSelector
-  epochs: 100
-- name: FallbackClassifier
-  threshold: 0.3
+  epochs: 200 # +100 compared to original
+  constrain_similarities: True
+- name: FallbackClassifier # Determines when DIETClf triggers the nlu_fallback intent.
+  threshold: 0.4
   ambiguity_threshold: 0.1
 
 
-# Configuration for Rasa Core.
+# Configuration for Rasa Core. Defines the policies used by the model to predict the next action.
 # https://rasa.com/docs/rasa/core/policies/
-policies: #null
-# # No configuration for policies was provided. The following default policies were used to train your model.
-# # If you'd like to customize them, uncomment and adjust the policies.
+policies: 
 # # See https://rasa.com/docs/rasa/policies for more information.
-  - name: MemoizationPolicy
-  - name: RulePolicy
-  - name: UnexpecTEDIntentPolicy
-    max_history: 5
+  - name: RulePolicy # 1st PRIORITY
+  - name: MemoizationPolicy # 2nd PRIORITY. Remembers exact examples of stories from training data and uses this memory to make predictions for the next action.
+    max_history: 4 # Remembers the last 'max_history' number of turns (message sent by the user and any actions the assistant performed) to make a prediction.
+  - name: UnexpecTEDIntentPolicy # specialized tool for detecting and responding to unexpected user inputs.
+    max_history: 8 # how much dialogue history the model looks at before making an inference. We recommend you to set the max_history of UnexpecTEDIntentPolicy equal to that of TEDPolicy.
     epochs: 100
-  - name: TEDPolicy
-    max_history: 5
-    epochs: 100
-    constrain_similarities: True
+  - name: TEDPolicy # 3rd PRIORITY
+    max_history: 8
+    epochs: 100 # Number of times the algorithm will see the training data.
+    constrain_similarities: True # Apply a constraint on similarity values during training, which is a good practice for stable model performance.
+
