@@ -82,7 +82,7 @@ As for entity extraction, I decided against using the entity classifier ‘Entit
 Last, I found it beneficial to lower the threshold of the 'FallbackClassifier' to 0.2. The FallbackClassifier classifies a user's message with the intent 'nlu_fallback' in case the previous intent classifier wasn't able to classify the intent with a confidence greater or equal than the threshold. 
 
 
-## TO DO (ideas coming from people who have tested the chatbot):
+## TO DO (ideas from people who have tested the chatbot):
 A) An extra slot ‘brand’ for the NLU training data of the intent ‘search_drug’.
 
 B) A fifth intent ‘search_doctor_specialization’, and a corresponding form with three slots to be filled after being validated: ‘doc_specialization’, ‘city’, and ‘country’.
