@@ -191,7 +191,7 @@ class ShowHospitalsOnGMaps(Action):
         return []    
     
 
-# BELΟW ARE A COUPLE OF FAILED ATTEMPTS TO VALIDATE & DEBUG THE 'HOPSPITAL_FORM'. THEY TOOK TOO MANY HOURS TO JUST DELETE WITHOUT MY HEART BREAKING...
+# BELΟW ARE A COUPLE OF FAILED ATTEMPTS TO VALIDATE & DEBUG THE 'HOPSPITAL_FORM'. THEY TOOK TOO MANY HOURS TO JUST DELETE...
     
 # logger = logging.getLogger(__name__)
 # class ValidateHospitalForm(FormValidationAction): # Handle cases where no valid 'city'/'country' entity is detected.
@@ -331,9 +331,9 @@ class ValidateHospitalForm(FormValidationAction):
 
     def is_valid_city(self, city: Text) -> bool:
         """Check if the city from user's input is valid."""
-        # Check if it's a real city name with alphabetic characters (NO digits are accepted anywhere in the name) 
+        # Check if it's a real city name with alphabetic characters and maybe spaces, e.g. Νέα Υόρκη (NO digits are accepted anywhere in the name).
         # Also check if it's at least 2 characters long (valid inputs with 2 chars: Κω=Kos island, Ίο=Ios island).
-        passes_test_city = city.isalpha() and len(city) >=2
+        passes_test_city = all(c.isalpha() or c.isspace() for c in city) and len(city) >=2
         return passes_test_city
 
     def is_valid_country(self, country: Text) -> bool:

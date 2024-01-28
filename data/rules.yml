@@ -2,10 +2,20 @@ version: "3.1"
 
 rules:
 
-- rule: User complains to the bot for misunderstanding
+- rule: Ask the user to rephrase whenever they send a message with low NLU confidence
   steps:
   - intent: nlu_fallback 
   - action: utter_nlu_fallback
+
+- rule: User complains to the bot for misunderstanding
+  steps:
+  - intent: user_fallback
+  - action: utter_user_fallback
+
+- rule: User wants to search more sites
+  steps:
+  - intent: user_wants_more_sites
+  - action: utter_no_more_site
 
 - rule: Say hello when the user starts a conversation with intent 'greet'
   conversation_start: true

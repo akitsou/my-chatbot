@@ -28,9 +28,9 @@ pipeline: # See https://rasa.com/docs/rasa/tuning-your-model for more informatio
 - name: DIETClassifier # transformer-based model
   loss_type: cross_entropy # 
   embedding_dimension: 128
-  transformer_size: 1024
+  transformer_size: 512  # A size of 512 is moderate # previously: 1024
   number_of_attention_heads: 4
-  number_of_transformer_layers: 1
+  number_of_transformer_layers: 1 # While this can be sufficient for simpler chatbots or when computational resources are limited, more layers (typically 2-6 for chatbot applications) might be necessary for capturing more complex patterns in the data.
   constrain_similarities: True # Ensures that the similarity values during training are in a meaningful range when using the cross-entropy loss. For better and more stable training results.
   # constarin_similarities: True. This should help in better generalization of the model to real world test sets.
   epochs: 200 # +100 compared to original
@@ -41,21 +41,21 @@ pipeline: # See https://rasa.com/docs/rasa/tuning-your-model for more informatio
   epochs: 200 # +100 compared to original
   constrain_similarities: True
 - name: FallbackClassifier # Determines when DIETClf triggers the nlu_fallback intent.
-  threshold: 0.4
-  ambiguity_threshold: 0.1
-
+  threshold: 0.2
+  ambiguity_threshold: 0.05
 
 # Configuration for Rasa Core. Defines the policies used by the model to predict the next action.
 # https://rasa.com/docs/rasa/core/policies/
 policies: 
 # # See https://rasa.com/docs/rasa/policies for more information.
   - name: RulePolicy # 1st PRIORITY
+    core_fallback_threshold: 0.2 # default: 0.3
   - name: MemoizationPolicy # 2nd PRIORITY. Remembers exact examples of stories from training data and uses this memory to make predictions for the next action.
-    max_history: 4 # Remembers the last 'max_history' number of turns (message sent by the user and any actions the assistant performed) to make a prediction.
-  - name: UnexpecTEDIntentPolicy # specialized tool for detecting and responding to unexpected user inputs.
+    max_history: 6 # Remembers the last 'max_history' number of turns (message sent by the user and any actions the assistant performed) to make a prediction.
+  - name: UnexpecTEDIntentPolicy # 3rd PRIORITY. Specialized tool for detecting and responding to unexpected user inputs.
     max_history: 8 # how much dialogue history the model looks at before making an inference. We recommend you to set the max_history of UnexpecTEDIntentPolicy equal to that of TEDPolicy.
     epochs: 100
-  - name: TEDPolicy # 3rd PRIORITY
+  - name: TEDPolicy # 4th PRIORITY
     max_history: 8
     epochs: 100 # Number of times the algorithm will see the training data.
     constrain_similarities: True # Apply a constraint on similarity values during training, which is a good practice for stable model performance.

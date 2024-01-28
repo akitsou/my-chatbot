@@ -704,3 +704,189 @@ stories:
   - action: utter_goodbye
 
 
+- story: Mix - interactive_story_5
+  steps:
+  - intent: search_health_advice
+    entities:
+    - symptoms: δόντι
+  - slot_was_set:
+    - symptoms: δόντι
+  - action: action_fetch_web_advice
+  - action: utter_did_that_help
+  - intent: search_nearby_hospitals
+  - action: hospital_form
+  - active_loop: hospital_form
+  - slot_was_set:
+    - requested_slot: city
+  - intent: inform_hospital_form
+    entities:
+    - city: μύκονο
+    - country: κυκλάδες
+  - slot_was_set:
+    - city: μύκονο κυκλάδες
+  - action: hospital_form
+  - slot_was_set:
+    - city: μύκονο κυκλάδες
+  - slot_was_set:
+    - requested_slot: country
+  - intent: inform_hospital_form
+    entities:
+    - GPE: ελλάδα
+    - country: ελλάδα
+  - slot_was_set:
+    - country: ελλάδα
+  - slot_was_set:
+    - GPE: ελλάδα
+  - action: hospital_form
+  - slot_was_set:
+    - country: ελλάδα
+  - slot_was_set:
+    - requested_slot: null
+  - active_loop: null
+  - action: action_show_hospitals_on_GMaps
+  - action: utter_did_that_help
+  - intent: affirm
+  - action: utter_happy
+  - action: utter_more_help
+  - intent: search_drug
+    entities:
+    - drug: ντεπόν
+  - slot_was_set:
+    - drug: ντεπόν
+  - action: utter_wait
+  - action: action_try_skroutz
+  - action: utter_check_drug_results
+  - intent: refuse
+  - action: utter_other_website
+  - intent: affirm
+  - action: action_try_farmakopoios
+  - action: utter_check_drug_results
+  - intent: affirm
+  - action: utter_happy
+  - action: utter_more_help
+  - intent: search_health_advice
+    entities:
+    - symptoms: αρθρίτιδα
+  - slot_was_set:
+    - symptoms: αρθρίτιδα
+  - action: action_fetch_web_advice
+  - action: utter_did_that_help
+  - intent: affirm
+  - action: utter_happy
+  - action: utter_more_help
+  - intent: goodbye
+  - action: utter_goodbye
+
+- story: Mix - interactive_story_6
+  steps:
+  - intent: search_nearby_hospitals
+  - action: hospital_form
+  - active_loop: hospital_form
+  - slot_was_set:
+    - requested_slot: city
+  - intent: inform_hospital_form
+    entities:
+    - city: θεσσαλονικη
+  - slot_was_set:
+    - city: στη θεσσαλονικη
+  - action: hospital_form
+  - slot_was_set:
+    - city: στη θεσσαλονικη
+  - slot_was_set:
+    - requested_slot: country
+  - intent: inform_hospital_form
+    entities:
+    - GPE: Ελλάδα
+    - country: Ελλάδα
+  - slot_was_set:
+    - country: στην Ελλάδα
+  - slot_was_set:
+    - GPE: Ελλάδα
+  - action: hospital_form
+  - slot_was_set:
+    - country: null
+  - slot_was_set:
+    - requested_slot: country
+  - intent: inform_hospital_form
+    entities:
+    - GPE: Ελλάδα
+    - country: Ελλάδα
+  - slot_was_set:
+    - country: Ελλάδα
+  - slot_was_set:
+    - GPE: Ελλάδα
+  - action: hospital_form
+  - slot_was_set:
+    - country: Ελλάδα
+  - slot_was_set:
+    - requested_slot: null
+  - active_loop: null
+  - action: action_show_hospitals_on_GMaps
+  - action: utter_did_that_help
+  - intent: search_pharmacy
+  - action: action_list_247_pharmacies
+  - action: utter_did_that_help
+  - intent: affirm
+  - action: utter_happy
+  - action: utter_more_help
+  - intent: search_drug
+    entities:
+    - drug: κρέμα
+    - symptoms: αντικουνουπική
+  - slot_was_set:
+    - symptoms: αντικουνουπική
+  - slot_was_set:
+    - drug: κρέμα
+  - action: utter_wait
+  - action: action_try_skroutz
+  - action: utter_check_drug_results
+  - intent: affirm
+  - action: utter_happy
+  - action: utter_more_help
+  - intent: chitchat_birthplace
+  - action: utter_chitchat_birthplace
+  - intent: inform_birthplace
+    entities:
+    - GPE: Πάρο
+    - GPE: Πάρο
+  - slot_was_set:
+    - GPE: Πάρο
+  - action: utter_nice_birthplace
+  - action: utter_let's_go_back
+  - action: utter_more_help
+  - intent: refuse
+  - action: utter_goodbye
+
+- story: User chitchats about things + suicidal thoughts - interactive_story
+  steps:
+  - intent: greet
+  - intent: bot_challenge
+  - action: utter_iamabot
+  - action: utter_let's_go_back
+  - intent: chitchat_bot_name
+  - action: utter_Hippocrates_history
+  - intent: chitchat_years-old
+  - action: utter_chitchat_years-old
+  - intent: inform_age
+    entities:
+    - age: '30'
+  - slot_was_set:
+    - age: '30'
+  - action: utter_nice_age
+  - action: utter_let's_go_back
+  - intent: chitchat_birthplace
+  - action: utter_chitchat_birthplace
+  - intent: inform_birthplace
+    entities:
+    - GPE: Νάξο
+    - GPE: Νάξο
+  - slot_was_set:
+    - GPE: Νάξο
+  - action: utter_nice_birthplace
+  - action: utter_let's_go_back
+  - intent: suicidal_thoughts
+  - action: utter_positivity
+  - action: action_fetch_quote
+  - action: action_inform_abt_helpline
+  - intent: goodbye
+  - action: utter_goodbye

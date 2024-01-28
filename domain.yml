@@ -18,7 +18,9 @@ intents:
 - search_nearby_hospitals
 - search_pharmacy
 - suicidal_thoughts
+- user_fallback
 - user_is_not_serious
+- user_wants_more_sites
 responses:
   utter_Hippocrates_history:
   - text: |
@@ -39,9 +41,15 @@ responses:
   - text: Δεν μπορώ να έχω γνώμη για αυτήν την προσωπικότητα (συγγνώμη, {PERSON}!!!). Η ιδιότητά μου ως ο προσωπικός σου σύμβουλος υγείας δεν μου το επιτρέπει!
   utter_nice_age:
   - text: Είσαι αλήθεια {age}; Δεν σου φαίνεται!
+  utter_default:
+  - text: Συγγνώμη, δεν είμαι σίγουρος για το τι πρέπει να κάνω. Μπορείς να εξηγήσεις διαφορετικά αυτό που θέλεις; Θα με βοηθήσεις αν χρησιμοποιήσεις πιο λίγες λέξεις.
   utter_nlu_fallback:
   - text: Συγγνώμη, δεν είμαι σίγουρος για το τι μου ζητάς να κάνω. Μπορείς να το εξηγήσεις διαφορετικά, ίσως πιο απλά;
-  - text: Συγγνώμη, δεν κατάλαβα καλά τι εννοείς. Ξαναγράψε το πιο απλά!
+  - text: Συγγνώμη, δεν κατάλαβα καλά τι εννοείς. Ξαναγράψε το σε παρακαλώ πιο απλά!
+  utter_user_fallback:
+  - text: Με συγχωρείς που δεν σε κατάλαβα καλά. Σε παρακαλώ, ξαναγράψε μου τι θα ήθελες με πιο απλά ή με διαφορετικά λόγια!
+  utter_no_more_site:
+  - text: Λυπάμαι πολύ, αλλά δεν έχω τη δυνατότηα ακόμα να ψάξω σε άλλες πηγές από αυτές που σου έδωσα ήδη. Ωστόσο, μπορείς να με ρωτήσεις για κάποιο άλλο θέμα υγείας.
   utter_check_drug_results:
   - text: Είσαι ικανοποιημένος από αυτά τα αποτελέσματα; Θυμήσου ότι τα φάρμακα πρέπει να ωφελούν ή τουλάχιστον να μη βλάπτουν.
   - text: Είσαι ικανοποιημένος από αυτές τις επιλογές; Μην ξεχνάς ότι η υπερκατανάλωση φαρμάκων δεν είναι ωφέλιμη για τον οργανισμό σου.
@@ -50,10 +58,10 @@ responses:
   - text: Ένα λεπτό να ψάξω στην ιστοσελίδα skroutz.gr. Συνήθως εκεί υπάρχουν όλα...
   - text: Περίμενε ένα λεπτό να ψάξω στην ιστοσελίδα skroutz.gr. Μάλλον θα βρεις αυτό που θες...
   utter_greet:
-  - text: Καλώς ήρθες! Είμαι ο Ιπποκράτης, ο προσωπικός σου ιατρικός σύμβουλος! Τι μπορώ να κάνω για σένα σήμερα;
-  - text: Γεια σου! Είμαι ο Ιπποκράτης, ο προσωπικός σου ιατρικός σύμβουλος! Τι μπορώ να κάνω για σένα σήμερα;
-  - text: Γεια σου! Είμαι ο Ιπποκράτης, ο προσωπικός σου ιατρικός σύμβουλος! Πώς μπορώ να σε βοηθήσω σήμερα;
-  - text: Γεια χαρά! Είμαι ο Ιπποκράτης, ο προσωπικός σου ιατρικός σύμβουλος! Πες μου τι ψάχνεις και θα προσπαθήσω να το βρω αμέσως!
+  - text: Καλώς ήρθες! Είμαι ο Ιπποκράτης, ο προσωπικός σου ιατρικός σύμβουλος για θέματα υγείας, φάρμακα, φαρμακεία και νοσοκομεία! Τι μπορώ να κάνω για σένα σήμερα;
+  - text: Γεια σου! Είμαι ο Ιπποκράτης, ο προσωπικός σου ιατρικός σύμβουλος για θέματα υγείας, φάρμακα, φαρμακεία και νοσοκομεία! Τι μπορώ να κάνω για σένα σήμερα;
+  - text: Γεια σου! Είμαι ο Ιπποκράτης, ο προσωπικός σου ιατρικός σύμβουλος για θέματα υγείας, φάρμακα, φαρμακεία και νοσοκομεία! Πώς μπορώ να σε βοηθήσω σήμερα;
+  - text: Γεια χαρά! Είμαι ο Ιπποκράτης, ο προσωπικός σου ιατρικός σύμβουλος για θέματα υγείας, φάρμακα, φαρμακεία και νοσοκομεία! Πες μου τι ψάχνεις και θα προσπαθήσω να το βρω αμέσως!
   utter_did_that_help:
   - text: Βρήκες αυτό που ήθελες;
   - text: Σε κάλυψαν αυτές οι πληροφορίες;
@@ -102,13 +110,13 @@ session_config:
   session_expiration_time: 30
   carry_over_slots_to_new_session: false
 entities:
-- country
-- city
-- GPE
-- symptoms
-- drug
-- silly_thing
 - age
+- GPE
+- city
+- drug
+- symptoms
+- country
+- silly_thing
 - PERSON
 slots:
   symptoms:
@@ -179,31 +187,31 @@ forms:
     - city
     - country
 actions:
-- validate_hospital_form
-- utter_happy
-- action_show_hospitals_on_GMaps
-- utter_did_that_help
-- utter_more_help
-- utter_goodbye
-- utter_greet
-- action_fetch_web_advice
 - utter_nice_birthplace
+- utter_positivity
+- utter_iamabot
+- action_inform_abt_helpline
+- utter_chitchat_years-old
+- utter_goodbye
+- utter_nice_age
+- utter_let's_go_back
 - utter_chitchat_birthplace
-- utter_chitchat_person
-- utter_check_drug_results
+- utter_Hippocrates_history
+- action_fetch_quote
 - utter_wait
 - action_try_skroutz
-- utter_let's_go_back
-- utter_silly_thing_back
-- utter_Hippocrates_history
-- utter_nlu_fallback
-- utter_chitchat_years-old
-- utter_nice_age
-- utter_sad
+- utter_more_help
+- utter_check_drug_results
+- action_list_247_pharmacies
+- utter_did_that_help
+- action_show_hospitals_on_GMaps
+- utter_happy
 - utter_other_website
 - action_try_farmakopoios
-- utter_positivity
-- action_inform_abt_helpline
-- action_fetch_quote
-- action_list_247_pharmacies
-- utter_iamabot
+- action_fetch_web_advice
+- validate_hospital_form
+- utter_greet
+- utter_chitchat_person
+- utter_silly_thing_back
+- utter_nlu_fallback
+- utter_sad
